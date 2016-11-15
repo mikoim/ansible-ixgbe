@@ -1,2 +1,5 @@
 ---
-# defaults file for ixgbe
+ixgbe_version: 4.4.6
+ixgbe_download_url: "https://downloadmirror.intel.com/14687/eng/ixgbe-{{ ixgbe_version }}.tar.gz"
+ixgbe_checksum: md5:e11e83c96afe846b5ee72c309a58e11f
+ixgbe_reload_module: false

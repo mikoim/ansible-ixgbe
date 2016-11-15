@@ -1,2 +1,37 @@
 ---
-# tasks file for ixgbe
+- name: download ixgbe
+  get_url:
+    url: "{{ ixgbe_download_url }}"
+    dest: /tmp/ixgbe.tar.gz
+    checksum: "{{ ixgbe_checksum }}"
+
+- name: extract ixgbe tarball
+  unarchive:
+    src: /tmp/ixgbe.tar.gz
+    dest: /tmp
+    creates: "/tmp/ixgbe-{{ ixgbe_version }}/src/Makefile"
+    copy: no
+
+- name: compile ixgbe
+  command: make -j{{ ansible_processor_cores + 1 }}
+  args:
+    chdir: "/tmp/ixgbe-{{ ixgbe_version }}/src"
+    creates: /tmp/ixgbe-4.4.6/src/ixgbe.ko
+
+- name: install ixgbe
+  command: make install
+  args:
+    chdir: "/tmp/ixgbe-{{ ixgbe_version }}/src"
+    creates: /lib/modules/{{ ansible_kernel }}/updates/drivers/net/ethernet/intel/ixgbe/ixgbe.ko
+
+- name: unload ixgbe
+  modprobe:
+    name: ixgbe
+    state: absent
+  when: ixgbe_reload_module
+
+- name: load ixgbe
+  modprobe:
+    name: ixgbe
+    state: present
+  when: ixgbe_reload_module
