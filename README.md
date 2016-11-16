@@ -2,7 +2,7 @@ ansible-ixgbe
 =========
 
 [![Build Status](https://travis-ci.org/mikoim/ansible-ixgbe.svg?branch=master)](https://travis-ci.org/mikoim/ansible-ixgbe)
-
+[![Ansible Role](https://img.shields.io/ansible/role/13403.svg)](https://galaxy.ansible.com/mikoim/ixgbe/)
 
 Install ixgbe driver for Intel 10 Gigabit Ethernet Network Connections.
 
