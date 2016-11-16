@@ -1,0 +1,35 @@
+---
+- name: initialize docker
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: bring up container
+      docker_container:
+        name: ansible-ixgbe
+        image: centos:centos7
+        detach: yes
+        tty: yes
+        command: sleep infinity
+        state: started
+
+    - name: register new container hostname
+      add_host: name=ansible-ixgbe
+
+- name: run roles in container
+  hosts: ansible-ixgbe
+  connection: docker
+
+  vars:
+    ansible_kernel: 3.10.0-327.36.3.el7.x86_64
+
+  roles:
+    - ../../ansible-ixgbe
+
+- name: finalize docker
+  hosts: localhost
+  tasks:
+    - name: remove container
+      docker_container:
+        name: ansible-ixgbe
+        state: absent
