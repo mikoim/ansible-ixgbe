@@ -41,4 +41,4 @@ Example Playbook
 License
 -------
 
-MIT
+GPLv2
